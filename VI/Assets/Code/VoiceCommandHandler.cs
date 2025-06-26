@@ -17,7 +17,6 @@ using System.Collections;
 public class VoiceCommandHandler : MonoBehaviour
 {
     [Header("绑定对象")]
-    public Text[] shoppingItems = new Text[12];
     public Text debugText;      // 调试文本（可选）
 
     [Header("ASR配置")]
@@ -27,11 +26,6 @@ public class VoiceCommandHandler : MonoBehaviour
 
     private bool isAsrConfigured = false; // ASR引擎是否初始化成功
     private bool permissionRequested;     // 是否已请求过麦克风权限
-
-    private static readonly Regex ChineseNumberPattern =
-        new Regex(@"([一二三四五六七八九十]+)([个只件条瓶盒袋桶包]+)");
-    private static readonly Regex ChineseNumber =
-        new Regex(@"([一二三四五六七八九十]+)");
 
     void Start()
     {
@@ -180,82 +174,63 @@ public class VoiceCommandHandler : MonoBehaviour
     private void ProcessVoiceCommand(string command)
     {
         UpdateDebugText(command);
-        if (command.Contains("牛奶巧克力") ||
-            command.Contains("咖啡") ||
-            command.Contains("矿泉水") ||
-            command.Contains("餐巾纸") ||
-            command.Contains("鸡蛋") ||
-            command.Contains("三明治") ||
-            command.Contains("巧克力棒") ||
-            command.Contains("麦片") ||
-            command.Contains("泡面")
-            )
+        if (command.Contains("情景模式"))
         {
-            string commodity = "";
-            if (command.Contains("牛奶巧克力")) commodity = "牛奶巧克力";
-            else if (command.Contains("咖啡")) commodity = "咖啡";
-            else if (command.Contains("矿泉水")) commodity = "矿泉水";
-            else if (command.Contains("餐巾纸")) commodity = "餐巾纸";
-            else if (command.Contains("鸡蛋")) commodity = "鸡蛋";
-            else if (command.Contains("三明治")) commodity = "三明治";
-            else if (command.Contains("巧克力棒")) commodity = "巧克力棒";
-            else if (command.Contains("麦片")) commodity = "麦片";
-            else if (command.Contains("泡面")) commodity = "泡面";
-
-            MatchCollection matches = ChineseNumberPattern.Matches(command);
-            if (matches.Count > 0)
+            if (command.Contains("切换"))
             {
-
-                for (int i = 0; i < 12; i++)
+                if (command.Contains("离家模式"))
                 {
-                    if (shoppingItems[i].text == "")
-                    {
-                        string chineseNumber = matches[0].Groups[1].Value; // 汉语数字部分
-                        string unit = matches[0].Groups[2].Value;          // 量词部分
-                        switch (chineseNumber)
-                        {
-                            case "一": chineseNumber = "1"; break;
-                            case "二": chineseNumber = "2"; break;
-                            case "三": chineseNumber = "3"; break;
-                            case "四": chineseNumber = "4"; break;
-                            case "五": chineseNumber = "5"; break;
-                            case "六": chineseNumber = "6"; break;
-                            case "七": chineseNumber = "7"; break;
-                            case "八": chineseNumber = "8"; break;
-                            case "九": chineseNumber = "9"; break;
-                        }
-                        shoppingItems[i].text = $"{commodity}  {chineseNumber}{unit}";
-                        break;
-                    }
+
+                }else if (command.Contains("在家模式"))
+                {
+
                 }
             }
         }
-        else if (command.Contains("删除"))
+        if (command.Contains("空调温度") || command.Contains("室内温度") || command.Contains("室外天气"))
         {
-            MatchCollection matches = ChineseNumber.Matches(command);
-            if (command.Contains("全部"))
+            if (command.Contains("空调温度"))
             {
-                for (int i = 0; i < 12; i++)
+                if (command.Contains("调整")) 
+                { 
+                    
+                } 
+            }
+            if (command.Contains("室内温度"))
+            {
+                if (command.Contains("多少度"))
                 {
-                    shoppingItems[i].text = "";
+
                 }
             }
-            else if (matches.Count > 0)
+            if (command.Contains("室外天气"))
             {
-                int index = 0;
-                string chineseNumber = matches[0].Groups[1].Value;
-                switch (chineseNumber)
+
+            }
+        }
+        if(command.Contains("大灯") || command.Contains("环境灯"))
+        {
+            if (command.Contains("大灯"))
+            {
+                if (command.Contains("打开"))
                 {
-                    case "一": index = 0; break;
-                    case "二": index = 1; break;
-                    case "三": index = 2; break;
-                    case "四": index = 3; break;
-                    case "五": index = 4; break;
-                    case "六": index = 5; break;
-                    case "七": index = 6; break;
-                    case "八": index = 7; break;
+
                 }
-                shoppingItems[index].text = "";
+                else if(command.Contains("关闭"))
+                {
+
+                }
+            }
+            if (command.Contains("环境灯"))
+            {
+                if (command.Contains("打开"))
+                {
+
+                }
+                else if (command.Contains("关闭"))
+                {
+
+                }
             }
         }
     }
