@@ -18,6 +18,12 @@ public class VoiceCommandHandler : MonoBehaviour
 {
     [Header("绑定对象")]
     public Text debugText;      // 调试文本（可选）
+    public Text airdoortmp;     //
+    public Text indoortmp;      //
+    public Text biglighttext;
+    public Text mixlighttext;
+    public Light biglight;
+    public Light mixlight;
 
     [Header("ASR配置")]
     [Tooltip("自动停止ASR服务（设为false可强制持续监听）")]
@@ -180,32 +186,38 @@ public class VoiceCommandHandler : MonoBehaviour
             {
                 if (command.Contains("离家模式"))
                 {
-
-                }else if (command.Contains("在家模式"))
+                    UpdateDebugText("已将空调关闭");
+                    airdoortmp.text = "关闭";
+                }
+                else if (command.Contains("在家模式"))
                 {
-
+                    UpdateDebugText("已将空调打开");
+                    airdoortmp.text = "26°c";
                 }
             }
         }
-        if (command.Contains("空调温度") || command.Contains("室内温度") || command.Contains("室外天气"))
+        if (command.Contains("空调温度") || command.Contains("室内温度"))
         {
             if (command.Contains("空调温度"))
             {
-                if (command.Contains("调整")) 
-                { 
-                    
-                } 
+                if (command.Contains("太高了")) 
+                {
+                    airdoortmp.text = "26°c";
+                    UpdateDebugText("已为您调整至26摄氏度");
+                }
+                else if (command.Contains("太低了"))
+                {
+                    airdoortmp.text = "32°c";
+                    UpdateDebugText("已为您调整至32摄氏度");
+                }
+
             }
             if (command.Contains("室内温度"))
             {
                 if (command.Contains("多少度"))
                 {
-
+                    UpdateDebugText(indoortmp.text);
                 }
-            }
-            if (command.Contains("室外天气"))
-            {
-
             }
         }
         if(command.Contains("大灯") || command.Contains("环境灯"))
@@ -214,22 +226,26 @@ public class VoiceCommandHandler : MonoBehaviour
             {
                 if (command.Contains("打开"))
                 {
-
+                    biglight.intensity = 1f;
+                    biglighttext.text = "大灯 打开";
                 }
                 else if(command.Contains("关闭"))
                 {
-
+                    biglight.intensity = 0f;
+                    biglighttext.text = "大灯 关闭";
                 }
             }
             if (command.Contains("环境灯"))
             {
                 if (command.Contains("打开"))
                 {
-
+                    mixlight.intensity = 1f;
+                    mixlighttext.text = "环境灯 打开";
                 }
                 else if (command.Contains("关闭"))
                 {
-
+                    biglight.intensity = 0f;
+                    mixlighttext.text = "环境灯 关闭";
                 }
             }
         }
